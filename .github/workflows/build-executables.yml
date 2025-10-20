@@ -18,9 +18,11 @@ jobs:
         include:
           - os: windows-latest
             output_name: CSV_Unique_Counter.exe
+            renamed_file: CSV_Unique_Counter_Windows.exe
             artifact_name: CSV_Unique_Counter_Windows
           - os: macos-latest
             output_name: CSV_Unique_Counter
+            renamed_file: CSV_Unique_Counter_Mac
             artifact_name: CSV_Unique_Counter_Mac
     
     runs-on: ${{ matrix.os }}
@@ -49,11 +51,21 @@ jobs:
       run: |
         pyinstaller --onefile --windowed --name "CSV_Unique_Counter" csv_unique_counter.py
     
+    - name: Rename executable (Windows)
+      if: matrix.os == 'windows-latest'
+      run: |
+        mv dist/${{ matrix.output_name }} dist/${{ matrix.renamed_file }}
+    
+    - name: Rename executable (Mac)
+      if: matrix.os == 'macos-latest'
+      run: |
+        mv dist/${{ matrix.output_name }} dist/${{ matrix.renamed_file }}
+    
     - name: Upload executable
       uses: actions/upload-artifact@v4
       with:
         name: ${{ matrix.artifact_name }}
-        path: dist/${{ matrix.output_name }}
+        path: dist/${{ matrix.renamed_file }}
         retention-days: 90
 
   create-release:
@@ -83,8 +95,8 @@ jobs:
         draft: false
         prerelease: false
         files: |
-          ./artifacts/windows/CSV_Unique_Counter.exe
-          ./artifacts/mac/CSV_Unique_Counter
+          ./artifacts/windows/CSV_Unique_Counter_Windows.exe
+          ./artifacts/mac/CSV_Unique_Counter_Mac
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 

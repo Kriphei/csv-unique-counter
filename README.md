@@ -19,8 +19,8 @@ A simple, user-friendly tool to count unique values in CSV columns, powered by D
 
 1. Go to the [Releases](../../releases) page
 2. Download the latest version:
-   - **Windows**: `CSV_Unique_Counter.exe`
-   - **Mac**: `CSV_Unique_Counter`
+   - **Windows**: `CSV_Unique_Counter_Windows.exe`
+   - **Mac**: `CSV_Unique_Counter_Mac`
 3. Double-click to run!
 
 **Mac users**: On first run, right-click → Open to bypass security warnings.
