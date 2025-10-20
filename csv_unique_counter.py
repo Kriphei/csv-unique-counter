@@ -7,6 +7,7 @@ import duckdb
 import tkinter as tk
 from tkinter import filedialog, messagebox
 import os
+import csv
 from pathlib import Path
 from datetime import datetime
 
@@ -137,27 +138,29 @@ def count_unique_values(file_path: str, column_name: str) -> tuple[list[tuple], 
 
 
 def save_results(results: list[tuple], column_name: str, csv_filename: str, downloads_path: str) -> str:
-    """Save results to a text file in the Downloads folder"""
+    """Save results to a CSV file in the Downloads folder"""
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-    output_filename = f"unique_values_{column_name}_{timestamp}.txt"
+    output_filename = f"unique_values_{column_name}_{timestamp}.csv"
     output_path = os.path.join(downloads_path, output_filename)
     
-    with open(output_path, 'w', encoding='utf-8') as f:
-        f.write(f"Unique Value Count Report\n")
-        f.write(f"=" * 60 + "\n")
-        f.write(f"Source File: {csv_filename}\n")
-        f.write(f"Column: {column_name}\n")
-        f.write(f"Total Unique Values: {len(results)}\n")
-        f.write(f"Generated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}\n")
-        f.write(f"=" * 60 + "\n\n")
+    with open(output_path, 'w', encoding='utf-8', newline='') as f:
+        writer = csv.writer(f)
+        
+        # Write metadata as comments (Excel-friendly)
+        writer.writerow(['Unique Value Count Report'])
+        writer.writerow(['Source File:', csv_filename])
+        writer.writerow(['Column Analyzed:', column_name])
+        writer.writerow(['Total Unique Values:', len(results)])
+        writer.writerow(['Generated:', datetime.now().strftime('%Y-%m-%d %H:%M:%S')])
+        writer.writerow([])  # Empty row separator
+        
+        # Write header
+        writer.writerow(['Value', 'Count'])
         
         # Write results
-        f.write(f"{'Value':<40} {'Count':>15}\n")
-        f.write(f"{'-' * 40} {'-' * 15}\n")
-        
         for value, count in results:
             value_str = str(value) if value is not None else "(NULL)"
-            f.write(f"{value_str:<40} {count:>15,}\n")
+            writer.writerow([value_str, count])
     
     return output_path
 

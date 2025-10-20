@@ -111,16 +111,21 @@ If you want to build the executable manually on your own computer:
 
 ## Output Format
 
-The program creates a text file in your Downloads folder named:
+The program creates a CSV file in your Downloads folder named:
 ```
-unique_values_[COLUMN_NAME]_[TIMESTAMP].txt
+unique_values_[COLUMN_NAME]_[TIMESTAMP].csv
 ```
 
 The file contains:
-- Source file name
-- Column analyzed
-- Total unique values count
-- Complete list of values with their counts (sorted by frequency)
+- Metadata header (source file, column name, total count, timestamp)
+- Column headers: "Value" and "Count"
+- Complete list of values with their counts (sorted by frequency, most common first)
+
+**Benefits of CSV format:**
+- ✅ Opens directly in Excel, Google Sheets, or any spreadsheet program
+- ✅ Easy to sort, filter, and analyze further
+- ✅ Can be imported into databases or other tools
+- ✅ Preserves numerical formatting for counts
 
 ## System Requirements
 
