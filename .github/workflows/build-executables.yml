@@ -44,12 +44,12 @@ jobs:
     - name: Build executable (Windows)
       if: matrix.os == 'windows-latest'
       run: |
-        pyinstaller --onefile --name "CSV_Unique_Counter" csv_unique_counter.py
+        pyinstaller --onefile --copy-metadata duckdb --name "CSV_Unique_Counter" csv_unique_counter.py
     
     - name: Build executable (Mac)
       if: matrix.os == 'macos-latest'
       run: |
-        pyinstaller --onefile --windowed --name "CSV_Unique_Counter" csv_unique_counter.py
+        pyinstaller --onefile --windowed --copy-metadata duckdb --name "CSV_Unique_Counter" csv_unique_counter.py
     
     - name: Rename executable (Windows)
       if: matrix.os == 'windows-latest'
